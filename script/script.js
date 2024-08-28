@@ -24,20 +24,23 @@ Colorare tutte le celle bomba quando la partita finisce*/
 
 
 console.log(`JS OK`);
-
+//PRIMA MILESTONE
 function createGrid() {
     const grid = document.getElementById("grid");
     const scoreElement = document.getElementById("score");
+    const endMessageElement = document.getElementById("endMessage");
     let score = 0;
     const maxScore = 84; // Punteggio massimo per vincere
 
-    if (!grid || !scoreElement) {
-        console.error("Grid o elemento punteggio non trovati.");
+    if (!grid || !scoreElement || !endMessageElement) {
+        console.error("Grid, elemento punteggio o elemento messaggio fine partita non trovati.");
         return;
     }
 
-    // Resetta il contenuto della griglia
+    //TERZA E QUARTA MILESTONE
+    // Resetta il contenuto della griglia e del messaggio di fine partita
     grid.innerHTML = "";
+    endMessageElement.textContent = ""; // Reset del messaggio di fine partita
     // Aggiungi la classe "visible" per attivare l'animazione
     grid.classList.add("visible");
 
@@ -64,7 +67,7 @@ function createGrid() {
                     // Se la cella non è una bomba
                     cell.classList.add("highlight");
                     score++;
-                    scoreElement.textContent = `Score: ${score}`;
+                    scoreElement.textContent = `Punteggio: ${score}`;
                     console.log("Hai cliccato sulla cella:", cell.textContent);
 
                     // Controlla se il punteggio massimo è stato raggiunto
@@ -80,6 +83,7 @@ function createGrid() {
     }
 }
 
+//SECONDA MILESTONE
 // Funzione per generare numeri casuali unici
 function generateUniqueRandomNumbers(count, min, max) {
     const numbers = new Set();
@@ -90,9 +94,16 @@ function generateUniqueRandomNumbers(count, min, max) {
     return Array.from(numbers);
 }
 
+//QUINTA MILESTONE
 // Funzione per terminare il gioco
 function endGame(finalScore, isVictory) {
+    const endMessageElement = document.getElementById("endMessage");
     const message = isVictory ? `Hai vinto! Punteggio finale: ${finalScore}` : `Hai perso. Punteggio finale: ${finalScore}`;
+
+    // Mostra il messaggio di fine partita sulla pagina
+    endMessageElement.textContent = message;
+
+    // Mostra un messaggio nella console e un alert
     console.log(message);
     alert(message);
 
@@ -100,4 +111,3 @@ function endGame(finalScore, isVictory) {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => cell.classList.add('clicked'));
 }
-

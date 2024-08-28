@@ -24,11 +24,11 @@ Colorare tutte le celle bomba quando la partita finisce*/
 
 
 console.log(`JS OK`);
-//Recupero gli elementi dal DOM
-const grid = document.getElementById("grid");
-const scoreElement = document.getElementById("score");
-//MILESTONE 1
+//Creo la griglia
 function createGrid() {
+    //Recupero gli elementi dal DOM
+    const grid = document.getElementById("grid");
+    const scoreElement = document.getElementById("score");
     let score = 0;
 
     if (!grid || !scoreElement) {
@@ -36,26 +36,40 @@ function createGrid() {
         return;
     }
 
-    // Resetta il contenuto della grid
+    // Resetta il contenuto della griglia
     grid.innerHTML = "";
-    // Classe variabile per l'animazione
+    // Aggiungi la classe "visible" per attivare l'animazione
     grid.classList.add("visible");
+
+    // Genera 16 numeri casuali unici
+    const randomNumbers = generateUniqueRandomNumbers(16, 1, 100);
+    console.log("Numeri casuali generati:", randomNumbers);
 
     for (let i = 1; i <= 100; i++) {
         const cell = document.createElement("div");
         cell.classList.add("cell");
         cell.textContent = i;
-        //Funzione per incrementare il punteggio e cambiare il colore dello sfondo
+
         cell.addEventListener("click", () => {
             if (!cell.classList.contains("clicked")) {
                 cell.classList.add("clicked");
-                cell.classList.add("highlight");
+                cell.classList.add("highlight"); // Aggiungi una classe CSS per lo stile
                 score++;
-                scoreElement.textContent = `Punteggio: ${score}`;
+                scoreElement.textContent = `Score: ${score}`;
                 console.log("Hai cliccato sulla cella:", cell.textContent);
             }
         });
 
         grid.appendChild(cell);
     }
+}
+
+// Funzione per generare numeri casuali unici
+function generateUniqueRandomNumbers(count, min, max) {
+    const numbers = new Set();
+    while (numbers.size < count) {
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        numbers.add(randomNumber);
+    }
+    return Array.from(numbers);
 }

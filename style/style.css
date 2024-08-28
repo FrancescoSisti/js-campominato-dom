@@ -65,7 +65,10 @@ body {
     opacity: 1;
 }
 
-/* Nuova classe per la cella cliccata */
 .cell.highlight {
     background-color: lightblue;
+}
+
+.cell.bomb {
+    background-color: red;
 }

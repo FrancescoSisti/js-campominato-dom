@@ -24,9 +24,8 @@ Colorare tutte le celle bomba quando la partita finisce*/
 
 
 console.log(`JS OK`);
-//Creo la griglia
+
 function createGrid() {
-    //Recupero gli elementi dal DOM
     const grid = document.getElementById("grid");
     const scoreElement = document.getElementById("score");
     let score = 0;
@@ -36,14 +35,12 @@ function createGrid() {
         return;
     }
 
-    // Resetta il contenuto della griglia
     grid.innerHTML = "";
-    // Aggiungi la classe "visible" per attivare l'animazione
     grid.classList.add("visible");
 
-    // Genera 16 numeri casuali unici
-    const randomNumbers = generateUniqueRandomNumbers(16, 1, 100);
-    console.log("Numeri casuali generati:", randomNumbers);
+    // Genera 16 numeri casuali unici per le bombe
+    const bombs = generateUniqueRandomNumbers(16, 1, 100);
+    console.log("Numeri delle bombe:", bombs);
 
     for (let i = 1; i <= 100; i++) {
         const cell = document.createElement("div");
@@ -53,10 +50,18 @@ function createGrid() {
         cell.addEventListener("click", () => {
             if (!cell.classList.contains("clicked")) {
                 cell.classList.add("clicked");
-                cell.classList.add("highlight"); // Aggiungi una classe CSS per lo stile
-                score++;
-                scoreElement.textContent = `Score: ${score}`;
-                console.log("Hai cliccato sulla cella:", cell.textContent);
+
+                if (bombs.includes(i)) {
+                    // Se la cella è una bomba
+                    cell.classList.add("bomb");
+                    console.log("Hai cliccato su una bomba. Fine partita!");
+                } else {
+                    // Se la cella non è una bomba
+                    cell.classList.add("highlight");
+                    score++;
+                    scoreElement.textContent = `Score: ${score}`;
+                    console.log("Hai cliccato sulla cella:", cell.textContent);
+                }
             }
         });
 

@@ -68,3 +68,8 @@ body {
 .blue {
     background-color: lightblue;
 }
+
+/* Nuova classe per la cella cliccata */
+.cell.highlight {
+    background-color: lightblue;
+}

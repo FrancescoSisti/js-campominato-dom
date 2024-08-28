@@ -1,24 +1,24 @@
 console.log(`JS OK`);
 
 function createGrid() {
-    const griglia = document.getElementById("grid");
+    const grid = document.getElementById("grid");
 
-    // Pulisci la griglia in caso di clic ripetuti
-    griglia.innerHTML = "";
+    // Pulisci la grid in caso di clic ripetuti
+    grid.innerHTML = "";
 
     // Aggiungi la classe "visible" per attivare l'animazione
-    griglia.classList.add("visible");
+    grid.classList.add("visible");
 
     for (let i = 1; i <= 100; i++) {
-        const cella = document.createElement("div");
-        cella.classList.add("cella");
-        cella.textContent = i;
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.textContent = i;
 
-        cella.addEventListener("click", () => {
-            cella.style.backgroundColor = "lightblue";
-            //cella.classList.toggle("blue");
-            console.log("Hai cliccato sulla cella:", cella.textContent);
+        cell.addEventListener("click", () => {
+            cell.style.backgroundColor = "lightblue";
+            //cell.classList.toggle("blue");
+            console.log("Hai cliccato sulla cella:", cell.textContent);
         });
-        griglia.appendChild(cella);
+        grid.appendChild(cell);
     }
 }

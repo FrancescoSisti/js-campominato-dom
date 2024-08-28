@@ -29,13 +29,16 @@ function createGrid() {
     const grid = document.getElementById("grid");
     const scoreElement = document.getElementById("score");
     let score = 0;
+    const maxScore = 84; // Punteggio massimo per vincere
 
     if (!grid || !scoreElement) {
         console.error("Grid o elemento punteggio non trovati.");
         return;
     }
 
+    // Resetta il contenuto della griglia
     grid.innerHTML = "";
+    // Aggiungi la classe "visible" per attivare l'animazione
     grid.classList.add("visible");
 
     // Genera 16 numeri casuali unici per le bombe
@@ -55,12 +58,20 @@ function createGrid() {
                     // Se la cella è una bomba
                     cell.classList.add("bomb");
                     console.log("Hai cliccato su una bomba. Fine partita!");
+                    // Termina il gioco in caso di bomba
+                    endGame(score, false);
                 } else {
                     // Se la cella non è una bomba
                     cell.classList.add("highlight");
                     score++;
                     scoreElement.textContent = `Score: ${score}`;
                     console.log("Hai cliccato sulla cella:", cell.textContent);
+
+                    // Controlla se il punteggio massimo è stato raggiunto
+                    if (score === maxScore) {
+                        console.log("Hai vinto! Punteggio massimo raggiunto.");
+                        endGame(score, true);
+                    }
                 }
             }
         });
@@ -78,3 +89,15 @@ function generateUniqueRandomNumbers(count, min, max) {
     }
     return Array.from(numbers);
 }
+
+// Funzione per terminare il gioco
+function endGame(finalScore, isVictory) {
+    const message = isVictory ? `Hai vinto! Punteggio finale: ${finalScore}` : `Hai perso. Punteggio finale: ${finalScore}`;
+    console.log(message);
+    alert(message);
+
+    // Disabilita ulteriori clic sulle celle
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.classList.add('clicked'));
+}
+

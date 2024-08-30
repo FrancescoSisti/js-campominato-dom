@@ -24,66 +24,7 @@ Colorare tutte le celle bomba quando la partita finisce*/
 
 
 console.log(`JS OK`);
-//PRIMA MILESTONE
-function createGrid() {
-    const grid = document.getElementById("grid");
-    const scoreElement = document.getElementById("score");
-    const endMessageElement = document.getElementById("endMessage");
-    let score = 0;
-    const maxScore = 84; // Punteggio massimo per vincere
 
-    if (!grid || !scoreElement || !endMessageElement) {
-        console.error("Grid, elemento punteggio o elemento messaggio fine partita non trovati.");
-        return;
-    }
-
-    //TERZA E QUARTA MILESTONE
-    // Resetta il contenuto della griglia e del messaggio di fine partita
-    grid.innerHTML = "";
-    endMessageElement.textContent = ""; // Reset del messaggio di fine partita
-    // Aggiungi la classe "visible" per attivare l'animazione
-    grid.classList.add("visible");
-
-    // Genera 16 numeri casuali unici per le bombe
-    const bombs = generateUniqueRandomNumbers(16, 1, 100);
-    console.log("Numeri delle bombe:", bombs);
-
-    for (let i = 1; i <= 100; i++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.textContent = i;
-
-        cell.addEventListener("click", () => {
-            if (!cell.classList.contains("clicked")) {
-                cell.classList.add("clicked");
-
-                if (bombs.includes(i)) {
-                    // Se la cella è una bomba
-                    cell.classList.add("bomb");
-                    console.log("Hai cliccato su una bomba. Fine partita!");
-                    // Termina il gioco in caso di bomba
-                    endGame(score, false);
-                } else {
-                    // Se la cella non è una bomba
-                    cell.classList.add("highlight");
-                    score++;
-                    scoreElement.textContent = `Punteggio: ${score}`;
-                    console.log("Hai cliccato sulla cella:", cell.textContent);
-
-                    // Controlla se il punteggio massimo è stato raggiunto
-                    if (score === maxScore) {
-                        console.log("Hai vinto! Punteggio massimo raggiunto.");
-                        endGame(score, true);
-                    }
-                }
-            }
-        });
-
-        grid.appendChild(cell);
-    }
-}
-
-//SECONDA MILESTONE
 // Funzione per generare numeri casuali unici
 function generateUniqueRandomNumbers(count, min, max) {
     const numbers = new Set();
@@ -94,20 +35,97 @@ function generateUniqueRandomNumbers(count, min, max) {
     return Array.from(numbers);
 }
 
-//QUINTA MILESTONE
+// Funzione per colorare tutte le celle bomba
+function revealBombs(bombs) {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+        if (bombs.includes(index + 1)) {
+            cell.classList.add('bomb');
+        }
+    });
+}
+
 // Funzione per terminare il gioco
-function endGame(finalScore, isVictory) {
+function endGame(finalScore, isVictory, bombs) {
     const endMessageElement = document.getElementById("endMessage");
     const message = isVictory ? `Hai vinto! Punteggio finale: ${finalScore}` : `Hai perso. Punteggio finale: ${finalScore}`;
 
-    // Mostra il messaggio di fine partita sulla pagina
     endMessageElement.textContent = message;
-
-    // Mostra un messaggio nella console e un alert
     console.log(message);
     alert(message);
 
-    // Disabilita ulteriori clic sulle celle
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => cell.classList.add('clicked'));
+
+    // Colora tutte le celle bomba alla fine del gioco
+    revealBombs(bombs);
 }
+
+// Funzione per ottenere il numero di celle in base alla difficoltà
+function getCellCount(difficulty) {
+    switch (difficulty) {
+        case 'facile': return 100;
+        case 'medio': return 81;
+        case 'difficile': return 49;
+        default: return 100;
+    }
+}
+
+// Funzione principale per creare la griglia
+function createGrid() {
+    const grid = document.getElementById("grid");
+    const scoreElement = document.getElementById("score");
+    const endMessageElement = document.getElementById("endMessage");
+    const difficultySelect = document.querySelector('.difficulty-select');
+    const difficulty = difficultySelect.value;
+    const cellCount = getCellCount(difficulty);
+    const bombCount = 16;
+    let score = 0;
+    const maxScore = cellCount - bombCount;
+
+    if (!grid || !scoreElement || !endMessageElement) {
+        console.error("Elementi della griglia non trovati.");
+        return;
+    }
+
+    grid.innerHTML = "";
+    endMessageElement.textContent = "";
+    scoreElement.textContent = "Punteggio: 0";
+    grid.classList.add("visible");
+
+    const bombs = generateUniqueRandomNumbers(bombCount, 1, cellCount);
+    console.log("Numeri delle bombe:", bombs);
+
+    const columns = Math.sqrt(cellCount);
+    grid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+    for (let i = 1; i <= cellCount; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.textContent = i;
+
+        cell.addEventListener("click", () => {
+            if (!cell.classList.contains("clicked")) {
+                cell.classList.add("clicked");
+
+                if (bombs.includes(i)) {
+                    cell.classList.add("bomb");
+                    endGame(score, false, bombs);
+                } else {
+                    cell.classList.add("highlight");
+                    score++;
+                    scoreElement.textContent = `Punteggio: ${score}`;
+
+                    if (score === maxScore) {
+                        endGame(score, true, bombs);
+                    }
+                }
+            }
+        });
+
+        grid.appendChild(cell);
+    }
+}
+
+// Aggiungi l'event listener al bottone "Gioca!"
+document.querySelector('.btn').addEventListener('click', createGrid);

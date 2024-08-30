@@ -22,11 +22,28 @@
     <h1>
         CAMPO MINATO IN JS!
     </h1>
-    <button onclick="createGrid()" class="btn">Gioca!</button>
     <div id="grid" class="hidden"></div>
     <div id="score">Punteggio: 0</div>
     <div id="endMessage"></div>
+    <div class="game-controls">
+        <button onclick="createGrid()" class="btn">Gioca!</button>
+        <select class="difficulty-select">
+            <option value="facile">Facile</option>
+            <option value="medio">Medio</option>
+            <option value="difficile">Difficile</option>
+        </select>
+    </div>
 
+    <footer>
+        <div class="footer-content">
+            <span class="footer-text">
+                <i class="fab fa-github github-icon"></i>
+                <a href="https://github.com/FrancescoSisti" target="_blank">Il mio GitHub</a>
+            </span>
+            <span class="footer-text">&copy; 2024 Campo Minato</span>
+            <span class="footer-text">Made with ❤️ by Francesco Sisti</span>
+        </div>
+    </footer>
     <!-- Link JS -->
     <script src="script/script.js"></script>
 </body>

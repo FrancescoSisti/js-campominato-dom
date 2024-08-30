@@ -16,14 +16,15 @@
 body {
     font-family: 'Roboto', sans-serif;
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #f5f5f5;
     color: #333;
 }
 
+/* Stili generali */
 .btn {
     background-color: var(--primary-color);
     border: none;
@@ -46,6 +47,17 @@ body {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Stili per la griglia e le celle */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: var(--grid-gap);
+    padding: 20px;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
 .cell {
     width: var(--cell-size);
     height: var(--cell-size);
@@ -66,14 +78,14 @@ body {
     transform: scale(1.05);
 }
 
-#grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: var(--grid-gap);
-    padding: 20px;
-    background-color: #e0e0e0;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.cell.highlight {
+    background-color: #81D4FA;
+    transform: scale(1.1);
+}
+
+.cell.bomb {
+    background-color: #FF5252;
+    animation: shake 0.5s;
 }
 
 .hidden {
@@ -85,16 +97,7 @@ body {
     opacity: 1;
 }
 
-.cell.highlight {
-    background-color: #81D4FA;
-    transform: scale(1.1);
-}
-
-.cell.bomb {
-    background-color: #FF5252;
-    animation: shake 0.5s;
-}
-
+/* Animazioni */
 @keyframes shake {
 
     0%,
@@ -108,5 +111,131 @@ body {
 
     75% {
         transform: translateX(5px);
+    }
+}
+
+/* Stili per i controlli di gioco */
+.game-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.difficulty-select {
+    margin-left: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-select:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.difficulty-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Stili per il footer */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+footer {
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    padding: 25px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+footer .footer-text {
+    margin: 0 15px;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+footer a {
+    color: #64ffda;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+}
+
+footer a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #64ffda;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+footer a:hover::after {
+    transform: scaleX(1);
+}
+
+footer a:hover {
+    color: #00bfa5;
+}
+
+footer .github-icon {
+    margin-right: 8px;
+    font-size: 1.4em;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+footer a:hover .github-icon {
+    transform: rotate(360deg) scale(1.1);
+}
+
+/* Media query per dispositivi mobili */
+@media (max-width: 600px) {
+    footer {
+        padding: 20px 0;
+    }
+
+    footer .footer-content {
+        flex-direction: column;
+    }
+
+    footer .footer-text {
+        margin: 8px 0;
     }
 }
